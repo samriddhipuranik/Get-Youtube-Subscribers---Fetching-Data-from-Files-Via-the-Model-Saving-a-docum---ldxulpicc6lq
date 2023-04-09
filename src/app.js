@@ -2,7 +2,7 @@
 const express = require('express');
 const app = express()
 const mongoose = require("mongoose");
-const Subscriber = require("./models/subscriber");
+const Subscriber = require("./models/subscribers");
 
 app.use(express.json());
 
