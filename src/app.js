@@ -31,15 +31,12 @@ async function getSubscriber(req, res, next) {
       return res.status(400).json({ message: "Invalid Subscriber ID" });
     }
   } catch (error) {
-    return res.status(400).json({ message: "Invalid Subscriber ID" });
+    return res.status(500).json({ message: error.message });
   }
 
   res.subscriber = subscriber;
   next();
 }
 
-app.get("/subscribers/:id", getSubscriber, (req, res) => {
-  res.json(res.subscriber);
-});
 
 module.exports = app;
