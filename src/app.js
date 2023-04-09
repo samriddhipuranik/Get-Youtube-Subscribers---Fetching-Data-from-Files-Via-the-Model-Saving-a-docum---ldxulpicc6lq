@@ -23,18 +23,23 @@ app.get("/subscribers/names", async (req, res) => {
   }
 });
 
-app.get("/subscribers/:id", async (req, res) => {
+async function getSubscriber(req, res, next) {
+  let subscriber;
   try {
-    const subscriber = await Subscriber.findById(req.params.id);
-    if (!subscriber) {
+    subscriber = await Subscriber.findById(req.params.id);
+    if (subscriber == null) {
       return res.status(400).json({ message: "Invalid Subscriber ID" });
     }
-    res.status(200).json(subscriber);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
+
+  res.subscriber = subscriber;
+  next();
+}
+
+app.get("/subscribers/:id", getSubscriber, (req, res) => {
+  res.json(res.subscriber);
 });
-
-
 
 module.exports = app;
