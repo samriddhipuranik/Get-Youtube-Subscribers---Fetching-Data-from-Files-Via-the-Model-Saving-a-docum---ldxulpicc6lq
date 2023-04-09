@@ -23,19 +23,12 @@ app.get("/subscribers/names", async (req, res) => {
   }
 });
 
-app.get("/subscribers/:id", getSubscriber, (req, res) => {
-  if (!res.subscriber) {
-    return res.status(400).json({ message: "Invalid Subscriber ID" });
-  }
-  res.json(res.subscriber);
-});
-
 async function getSubscriber(req, res, next) {
   let subscriber;
   try {
     subscriber = await Subscriber.findById(req.params.id);
     if (subscriber == null) {
-      return res.status(400).json({ message: "Subscriber not found" });
+      res.status(400);
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -44,5 +37,12 @@ async function getSubscriber(req, res, next) {
   res.subscriber = subscriber;
   next();
 }
+
+app.get("/subscribers/:id", getSubscriber, (req, res) => {
+  if (!res.subscriber) {
+    return res.status(400).json({ message: "Invalid Subscriber ID" });
+  }
+  res.json(res.subscriber);
+});
 
 module.exports = app;
