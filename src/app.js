@@ -39,7 +39,7 @@ async function getSubscriber(req, res, next) {
     return res.status(500).json({ message: error.message });
   }
 
-  res.subscriber = subscriber;
+  res.subscribers = subscriber;
   next();
 }
 module.exports = app;
